@@ -1,6 +1,6 @@
 # Taller 5 – Haciendo Economía  
 **Análisis de precios y volúmenes de acciones tecnológicas globales (2014–2024)**  
-Autor: *Samuel Blanco Castellanos*  
+Autor: *Samuel Blanco Castellanos*, *Natalia Rodriguez*
 Fecha: Octubre de 2025  
 
 ---
