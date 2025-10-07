@@ -1,0 +1,14 @@
+let
+    Origen = Excel.CurrentWorkbook(){[Name="Tabla1"]}[Content],
+    #"Otras columnas con anulación de dinamización" = Table.UnpivotOtherColumns(Origen, {"FECHAS", "NOK_VOLUME", "ASML_VOLUME", "SONY_VOLUME", "AMZN_VOLUME", "MSFT_VOLUME", "META_VOLUME", "NVDA_VOLUME", "GOOGL_VOLUME", "TSM_VOLUME", "APPL_VOLUME"}, "Atributo", "Valor"),
+    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Otras columnas con anulación de dinamización",{{"Valor", "Precio"}}),
+    #"Dividir columna por delimitador" = Table.SplitColumn(#"Columnas con nombre cambiado", "Atributo", Splitter.SplitTextByDelimiter("_", QuoteStyle.Csv), {"Atributo.1", "Atributo.2"}),
+    #"Tipo cambiado" = Table.TransformColumnTypes(#"Dividir columna por delimitador",{{"Atributo.1", type text}, {"Atributo.2", type text}}),
+    #"Otras columnas con anulación de dinamización1" = Table.UnpivotOtherColumns(#"Tipo cambiado", {"Atributo.1", "FECHAS", "Atributo.2", "Precio"}, "Atributo", "Valor"),
+    #"Columnas con nombre cambiado1" = Table.RenameColumns(#"Otras columnas con anulación de dinamización1",{{"Valor", "Volumen"}}),
+    #"Columnas quitadas" = Table.RemoveColumns(#"Columnas con nombre cambiado1",{"Atributo.2"}),
+    #"Columnas con nombre cambiado2" = Table.RenameColumns(#"Columnas quitadas",{{"Atributo.1", "Ticker"}}),
+    #"Columnas quitadas1" = Table.RemoveColumns(#"Columnas con nombre cambiado2",{"Atributo"}),
+    #"Columnas con nombre cambiado3" = Table.RenameColumns(#"Columnas quitadas1",{{"Precio", "PRICE"}, {"Volumen", "VOLUME"}, {"Ticker", "TICKER"}})
+in
+    #"Columnas con nombre cambiado3"
